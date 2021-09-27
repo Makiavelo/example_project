@@ -1,0 +1,86 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "78b29bc449de8e1deb47464d486964b9",
+    "packages": [
+        {
+            "name": "makiavelo/flex",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Makiavelo/flex.git",
+                "reference": "4bc806b6dc99aea19222472140c1195712bfecea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Makiavelo/flex/zipball/4bc806b6dc99aea19222472140c1195712bfecea",
+                "reference": "4bc806b6dc99aea19222472140c1195712bfecea",
+                "shasum": ""
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4",
+                "phpunit/phpunit": "^9"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Makiavelo\\Flex\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/Makiavelo/flex/issues",
+                "source": "https://github.com/Makiavelo/flex/tree/master"
+            },
+            "time": "2021-09-26T04:43:34+00:00"
+        },
+        {
+            "name": "makiavelo/quark",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Makiavelo/quark.git",
+                "reference": "1573fa72304fc706beb8fe3f58d74a743aba4354"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Makiavelo/quark/zipball/1573fa72304fc706beb8fe3f58d74a743aba4354",
+                "reference": "1573fa72304fc706beb8fe3f58d74a743aba4354",
+                "shasum": ""
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4",
+                "phpunit/phpunit": "^9"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Makiavelo\\Quark\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/Makiavelo/quark/issues",
+                "source": "https://github.com/Makiavelo/quark/tree/master"
+            },
+            "time": "2021-09-27T03:33:50+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "makiavelo/quark": 20,
+        "makiavelo/flex": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
+}

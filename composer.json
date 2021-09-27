@@ -1,0 +1,12 @@
+{
+    "name": "app/example",
+    "autoload": {
+        "psr-4": {
+            "App\\Example\\": "src/"
+        }
+    },
+    "require": {
+        "makiavelo/quark": "dev-master",
+        "makiavelo/flex": "dev-master"
+    }
+}
