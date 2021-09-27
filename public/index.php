@@ -42,8 +42,6 @@ $app->post('/', function(Request $req, Response $res) {
 $app->get('/admin/dashboard', function(Request $req, Response $res) {
     $layout = new View('../src/Views/layout.php');
     $content = $layout->fetch([
-        'header' => new View('../src/Views/header.php'),
-        'footer' => new View('../src/Views/footer.php'),
         'content' => new View('../src/Views/home/index.php')
     ]);
 
