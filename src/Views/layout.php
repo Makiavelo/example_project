@@ -21,7 +21,17 @@
                     <ul>
                         <div class="logo"><a href="index.html"><span>Focus</span></a></div>
                         <li class="label">Main</li>
-                        <li><a href="/"><i class="ti-home"></i> Dashboard </a></li>
+                        <li><a href="/admin/dashboard"><i class="ti-home"></i> Dashboard </a></li>
+                        <li>
+                            <a class="sidebar-sub-toggle">
+                                <i class="ti-home"></i> Users
+                                <span class="sidebar-collapse-icon ti-angle-down"></span>
+                            </a>
+                            <ul>
+                                <li><a href="/admin/users/create">Create</a></li>
+                                <li><a href="/admin/users">List</a></li>
+                            </ul>
+                    </li>
                         <li><a href="/logout"><i class="ti-close"></i> Logout</a></li>
                     </ul>
                 </div>
@@ -93,7 +103,5 @@
         <script src="/assets/js/lib/circle-progress/circle-progress.min.js"></script>
         <script src="/assets/js/lib/circle-progress/circle-progress-init.js"></script>
 
-        <!-- scripit init-->
-        <script src="/assets/js/dashboard2.js"></script>
     </body>
 </html>
