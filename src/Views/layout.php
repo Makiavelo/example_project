@@ -31,7 +31,17 @@
                                 <li><a href="/admin/users/create">Create</a></li>
                                 <li><a href="/admin/users">List</a></li>
                             </ul>
-                    </li>
+                        </li>
+                        <li>
+                            <a class="sidebar-sub-toggle">
+                                <i class="ti-home"></i> Tags
+                                <span class="sidebar-collapse-icon ti-angle-down"></span>
+                            </a>
+                            <ul>
+                                <li><a href="/admin/tags/create">Create</a></li>
+                                <li><a href="/admin/tags">List</a></li>
+                            </ul>
+                        </li>
                         <li><a href="/logout"><i class="ti-close"></i> Logout</a></li>
                     </ul>
                 </div>
