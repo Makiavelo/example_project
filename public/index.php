@@ -19,6 +19,9 @@ FlexRepository::get()->connect([
     'pass' => 'root'
 ]);
 
+/**
+ * Route to test session and cookies.
+ */
 $app->all('/.*', function(Request $req, Response $res) {
     $session = Session::get();
     $session->start();
@@ -38,12 +41,18 @@ $app->all('/.*', function(Request $req, Response $res) {
     }
 });
 
+/**
+ * Route to secure the admin area
+ */
 $app->use('/admin/.*', function(Request $req, Response $res) {
     if (Session::get()->param('logged_in') !== true) {
         $res->redirect('/');
     }
 });
 
+/**
+ * Route for the login page
+ */
 $app->get('/', function(Request $req, Response $res) {
     $layout = new View('../src/Views/login_layout.php');
     $content = $layout->fetch();
@@ -51,11 +60,17 @@ $app->get('/', function(Request $req, Response $res) {
     $res->status(200)->send($content);
 });
 
+/**
+ * Route for the logout page
+ */
 $app->get('/logout', function(Request $req, Response $res) {
     Session::get()->set('logged_in', false);
     $res->redirect('/');
 });
 
+/**
+ * Route to login via POST
+ */
 $app->post('/', function(Request $req, Response $res) {
     if ($req->param('user') === 'admin' && $req->param('pass') === 'admin') {
         Session::get()->set('logged_in', true);
@@ -65,6 +80,9 @@ $app->post('/', function(Request $req, Response $res) {
     }
 });
 
+/**
+ * Main admin page Route
+ */
 $app->get('/admin/dashboard', function(Request $req, Response $res) {
     $layout = new View('../src/Views/layout.php');
     $content = $layout->fetch([
@@ -77,6 +95,11 @@ $app->get('/admin/dashboard', function(Request $req, Response $res) {
 // Example using a router
 $app->addRouter(new UserRouter('/admin/users'));
 
+
+/**
+ * Adding a CRUD for tags without using a router
+ * Check the UserRouter for the alternative
+ */
 $app->get('/admin/tags', function(Request $req, Response $res) {
     $tags = FlexRepository::get()->find('tag');
     $layout = new View('../src/Views/layout.php');
@@ -132,6 +155,10 @@ $app->post('/admin/tags/edit/@id', function(Request $req, Response $res) {
     $res->status(200)->send($content);
 });
 
+/**
+ * This route matches any request, so if none of the above matched
+ * then it's a 404.
+ */
 $app->all('/.*', function(Request $req, Response $res) {
     $res->status(404)->send('Oops, page not found...');
 });
