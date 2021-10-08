@@ -5,10 +5,11 @@ use Makiavelo\Quark\Quark;
 use Makiavelo\Quark\Request;
 use Makiavelo\Quark\Response;
 use Makiavelo\Quark\View;
+use Makiavelo\Quark\Util\Session;
+use Makiavelo\Quark\Util\Cookies;
 use Makiavelo\Flex\FlexRepository;
-use Makiavelo\Flex\Flex;
 use App\Example\Models\Tag;
-use App\Example\Models\User;
+use App\Example\Routers\UserRouter;
 
 $app = Quark::app();
 FlexRepository::get()->connect([
@@ -18,10 +19,27 @@ FlexRepository::get()->connect([
     'pass' => 'root'
 ]);
 
-session_start();
+$app->all('/.*', function(Request $req, Response $res) {
+    $session = Session::get();
+    $session->start();
+    $session->set('session_var', 'SomeValue222');
+
+    $cookies = Cookies::get();
+    if (!$cookies->param('welcome')) {
+        $cookies->send([
+            'name' => 'welcome',
+            'value' => 'Hello!',
+            'expires' => time()+60*60*24*30, // 30 days
+            'path' => "/", // Available for all routes
+            'domain' => "example.local",
+        ]);
+
+        $res->redirect($req->path());
+    }
+});
 
 $app->use('/admin/.*', function(Request $req, Response $res) {
-    if ($_SESSION['logged_in'] !== true) {
+    if (Session::get()->param('logged_in') !== true) {
         $res->redirect('/');
     }
 });
@@ -34,13 +52,13 @@ $app->get('/', function(Request $req, Response $res) {
 });
 
 $app->get('/logout', function(Request $req, Response $res) {
-    $_SESSION['logged_in'] = false;
+    Session::get()->set('logged_in', false);
     $res->redirect('/');
 });
 
 $app->post('/', function(Request $req, Response $res) {
     if ($req->param('user') === 'admin' && $req->param('pass') === 'admin') {
-        $_SESSION['logged_in'] = true;
+        Session::get()->set('logged_in', true);
         $res->redirect('/admin/dashboard');
     } else {
         $res->redirect('/?user=' . $req->param('user'));
@@ -56,75 +74,8 @@ $app->get('/admin/dashboard', function(Request $req, Response $res) {
     $res->status(200)->send($content);
 });
 
-$app->get('/admin/users', function(Request $req, Response $res) {
-    $users = FlexRepository::get()->find('user');
-    $layout = new View('../src/Views/layout.php');
-    $content = $layout->fetch([
-        'content' => new View('../src/Views/users/list.php', ['users' => $users])
-    ]);
-
-    $res->status(200)->send($content);
-});
-
-$app->get('/admin/users/create', function(Request $req, Response $res) {
-    $layout = new View('../src/Views/layout.php');
-    $content = $layout->fetch([
-        'content' => new View('../src/Views/users/create.php')
-    ]);
-
-    $res->status(200)->send($content);
-});
-
-$app->post('/admin/users/create', function(Request $req, Response $res) {
-    $repo = FlexRepository::get();
-    $user = $repo->create('user');
-    $user->name = $req->param('name');
-    $user->last_name = $req->param('last_name');
-    $repo->save($user);
-    $res->redirect('/admin/users/edit/' . $user->id);
-});
-
-$app->get('/admin/users/edit/@id', function(Request $req, Response $res) {
-    $params = [':id' => $req->param('id')];
-    $users = FlexRepository::get()->find('user', 'id = :id', $params, ['class' => 'App\\Example\\Models\\User']);
-
-    $tags = FlexRepository::get()->query('SELECT * FROM tag', [], ['class' => 'App\\Example\\Models\\Tag']);
-
-    $layout = new View('../src/Views/layout.php');
-    $content = $layout->fetch([
-        'content' => new View('../src/Views/users/edit.php', ['user' => $users[0], 'tags' => $tags])
-    ]);
-
-    $res->status(200)->send($content);
-});
-
-$app->post('/admin/users/edit/@id', function(Request $req, Response $res) {
-    $params = [':id' => $req->param('id')];
-    $users = FlexRepository::get()->find('user', 'id = :id', $params, ['class' => 'App\\Example\\Models\\User']);
-    $user = $users[0];
-
-    $user->setName($req->param('name'));
-    $user->setLastName($req->param('last_name'));
-
-    $tags = [];
-    if ($req->param('tags')) {
-        $tags = FlexRepository::get()->find('tag', 'id IN ('. implode(',', $req->param('tags')) .')', [], ['class' => 'App\\Example\\Models\\Tag']);
-    }
-    $user->setTags($tags);
-
-    FlexRepository::get()->save($user);
-    $res->redirect('/admin/users/edit/' . $user->id);
-});
-
-$app->get('/admin/users', function(Request $req, Response $res) {
-    $users = FlexRepository::get()->find('user');
-    $layout = new View('../src/Views/layout.php');
-    $content = $layout->fetch([
-        'content' => new View('../src/Views/users/list.php', ['users' => $users])
-    ]);
-
-    $res->status(200)->send($content);
-});
+// Example using a router
+$app->addRouter(new UserRouter('/admin/users'));
 
 $app->get('/admin/tags', function(Request $req, Response $res) {
     $tags = FlexRepository::get()->find('tag');

@@ -1,3 +1,6 @@
+<?php
+    use Makiavelo\Quark\Request;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,7 +45,7 @@
                             <form method="POST" action="/">
                                 <div class="form-group">
                                     <label>Username or email address</label>
-                                    <input name="user" class="form-control" placeholder="Username/Email">
+                                    <input name="user" class="form-control" placeholder="Username/Email" value="<?php echo Request::get()->param('user'); ?>">
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
